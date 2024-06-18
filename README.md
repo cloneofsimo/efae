@@ -33,19 +33,15 @@ The idea is to use a flow-based model. The flow-based model is a generative mode
 
 Then the next idea here is to train the encoder that maps $I \rightarrow Z$ to be equivariant, in end-to-end fashion. This can be done with following objective
 
-$$
-\begin{equation}
+```math
 L = \mathbb{E}_{x \sim p(x)} [ \mathbb{E}_{z \sim q_\phi(z | x)} [ -\log p_\theta(x | z) ] ]
-\end{equation}
-$$
+```
 
 Here, we can use the flow-based model for $p_\theta(x | z)$, and train the encoder $q_\phi(z | x)$ to be equivariant, via augmenting the objective that expects the equivariance. We randomly sample group action $g \in G$, perform one on the latent space $z$, and expect the outcome to be the same as the group action on the data space $x$. This can be done by augmenting the objective as follows:
 
-$$
-\begin{equation}
+```math
 L = \mathbb{E}_{x \sim p(x), g \sim p(G)} [ \mathbb{E}_{z \sim q_\phi(z | x)} [ -\log p_\theta(gx | gz) ] ]
-\end{equation}
-$$
+```
 
 The rest follows the standard flow-based model training. Here we use the code based on [minRF](https://github.com/cloneofsimo/minRF).
 
