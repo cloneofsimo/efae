@@ -34,13 +34,13 @@ The idea is to use a flow-based model. The flow-based model is a generative mode
 Then the next idea here is to train the encoder that maps $I \rightarrow Z$ to be equivariant, in end-to-end fashion. This can be done with following objective
 
 $$
-\mathcal{L} = \mathbb{E}_{x \sim p(x)} \left[ \mathbb{E}_{z \sim q_\phi(z | x)} \left[ -\log p_\theta(x | z) \right] \right] 
+L = \mathbb{E}_{x \sim p(x)} \left[ \mathbb{E}_{z \sim q_\phi(z | x)} \left[ -\log p_\theta(x | z) \right] \right] 
 $$
 
 Here, we can use the flow-based model for $p_\theta(x | z)$, and train the encoder $q_\phi(z | x)$ to be equivariant, via augmenting the objective that expects the equivariance. We randomly sample group action $g \in G$, perform one on the latent space $z$, and expect the outcome to be the same as the group action on the data space $x$. This can be done by augmenting the objective as follows:
 
 $$
-\mathcal{L} = \mathbb{E}_{x \sim p(x), g \sim p(G)} \left[ \mathbb{E}_{z \sim q_\phi(z | x)} \left[ -\log p_\theta(gx | gz) \right] \right]
+L = \mathbb{E}_{x \sim p(x), g \sim p(G)} \left[ \mathbb{E}_{z \sim q_\phi(z | x)} \left[ -\log p_\theta(gx | gz) \right] \right]
 $$
 
 The rest follows the standard flow-based model training. Here we use the code based on [minRF](https://github.com/cloneofsimo/minRF).
@@ -49,7 +49,6 @@ The rest follows the standard flow-based model training. Here we use the code ba
 
 1. Vertical, Horizontal flip: For the image data, we can flip the image vertically or horizontally. In the latent space, naive flipping won't make it due to the nature of the locality-favoring property of the common VAE. Consider the following example:
 
-(matrix with 0101, 1010, 0101, 1010)
 $$
 I = \begin{bmatrix}
 0 & 1 & 0 & 1 \\
@@ -80,6 +79,7 @@ I = \begin{bmatrix}
 $$
 
 Which corresponds to the latent space:
+
 $$
 Z = \begin{bmatrix}
 0.7 & 0.7 \\
@@ -110,12 +110,14 @@ $$
 Z = \begin{bmatrix}
 Z_1 \\
 Z_2
-\end{bmatrix} \\
+\end{bmatrix}
+$$
+
+$$
 g_\Theta Z = \begin{bmatrix}
 Z_1 \\
 R_\Theta Z_2
 \end{bmatrix}
-
 $$
 
 
